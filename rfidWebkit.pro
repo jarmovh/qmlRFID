@@ -1,3 +1,5 @@
+QT += qml quick
+
 # Add more folders to ship with the application, here
 folder_01.source = qml/rfidWebkit
 folder_01.target = qml
@@ -13,13 +15,18 @@ QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    qPhidgetRFID.cpp
+    qPhidgetRFID.cpp \
+    qmlInterface.cpp
 
 # Please do not modify the following two lines. Required for deployment.
-include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
-qtcAddDeployment()
+#include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
+#qtcAddDeployment()
 
 HEADERS += \
-    qPhidgetRFID.h
+    qPhidgetRFID.h \
+    qmlInterface.h
 
 unix:!macx: LIBS += -lphidget21
+
+OTHER_FILES += \
+    qml/rfidWebkit/main.qml

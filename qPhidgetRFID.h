@@ -2,6 +2,8 @@
 #define QPHIDGETRFID_H
 
 #include <QObject>
+#include <QVariant>
+#include <QByteArray>
 #include "phidget21.h"
 
 class qPhidgetRFID : public QObject
@@ -16,11 +18,12 @@ public:
 
 private:
     CPhidgetRFIDHandle rfidHandle;
+    bool checkIfDeviceConnected();
 
-    
 signals:
     void handlerAttached();
     void handlerRemoved();
+    void tagOn(QVariant);
     
 public slots:
     void onHandlerAttached();

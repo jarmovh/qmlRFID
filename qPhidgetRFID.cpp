@@ -15,6 +15,10 @@ qPhidgetRFID::qPhidgetRFID(QObject *parent) :
 
     CPhidget_open((CPhidgetHandle)rfidHandle,-1);
 
+    if(checkIfDeviceConnected())
+        qDebug()<<"device connected";
+    else
+        qDebug()<<"no device found";
 }
 
 qPhidgetRFID::~qPhidgetRFID()
@@ -23,9 +27,37 @@ qPhidgetRFID::~qPhidgetRFID()
     CPhidget_delete((CPhidgetHandle)rfidHandle);
 }
 
+bool qPhidgetRFID::checkIfDeviceConnected()
+{
+    int result=0;
+    const char *err;
+
+    if((result = CPhidget_waitForAttachment((CPhidgetHandle)rfidHandle, 10000)))
+        {
+            CPhidget_getErrorDescription(result, &err);
+            qDebug()<<err;
+            return false;
+        }
+
+    CPhidgetRFID_setAntennaOn(rfidHandle,1);
+    return true;
+}
+
+
 void qPhidgetRFID::emitTagOnEvent(unsigned char *tag)
 {
-    qDebug()<<"tag:"<<tag;
+    QString tagHexData;
+
+    for(int i=0; i<5; i++)
+    {
+        QByteArray b;
+        b.append(tag[i]);
+
+        tagHexData.append(b.toHex());
+    }
+
+    qDebug()<<"hex:"<<tagHexData;
+    emit tagOn(tagHexData);
 }
 
 void qPhidgetRFID::emitTagLostEvent()
@@ -72,9 +104,8 @@ int tagOnHandler(CPhidgetRFIDHandle phid, void *userPtr, unsigned char *tag)
     CPhidgetRFIDHandle rfid = (CPhidgetRFIDHandle)phid;
 
     CPhidgetRFID_setLEDOn(rfid,1);
-    CPhidgetRFID_getLastTag(rfid,tag);
 
-    qDebug()<<tag;
+    //CPhidgetRFID_getLastTag(rfid,tag);
 
     p->emitTagOnEvent(tag);
 

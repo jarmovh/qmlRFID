@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     ui = new qmlInterface(0,context);
 
     context->setContextProperty("qIf",ui);
+    view.setResizeMode(QQuickView::SizeRootObjectToView);
 
     view.setSource(QUrl("qml/rfidWebkit/main.qml"));
     view.show();

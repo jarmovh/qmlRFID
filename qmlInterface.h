@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVariant>
 #include <QQmlContext>
+#include <QStringList>
+#include <QString>
 
 #include "qPhidgetRFID.h"
 
@@ -16,7 +18,11 @@ public:
 private:
     QQmlContext *context;
     qPhidgetRFID *rfid;
+
+    QStringList messageLog;
+
     void qmlSetTagText(QVariant text);
+    void logMessage(QString message);
     
 signals:
     void uiSetTagText(QVariant text);

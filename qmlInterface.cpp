@@ -6,8 +6,10 @@ qmlInterface::qmlInterface(QObject *parent, QQmlContext *ctx) :
 {
     context = ctx;
     rfid = new qPhidgetRFID(this);
+    tagManager = new qTagManager(this);
 
     connect(rfid, SIGNAL(tagOn(QVariant)), this, SLOT(onRFIDTag(QVariant)));
+
 }
 
 void qmlInterface::logMessage(QString message)

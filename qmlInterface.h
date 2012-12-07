@@ -7,7 +7,9 @@
 #include <QStringList>
 #include <QString>
 
+
 #include "qPhidgetRFID.h"
+#include "qTagManager.h"
 
 class qmlInterface : public QObject
 {
@@ -18,6 +20,7 @@ public:
 private:
     QQmlContext *context;
     qPhidgetRFID *rfid;
+    qTagManager *tagManager;
 
     QStringList messageLog;
 

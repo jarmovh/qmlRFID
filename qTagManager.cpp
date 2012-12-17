@@ -17,14 +17,37 @@ qTagManager::qTagManager(QObject *parent) :
     }
     else
     {
-        QSqlQuery e;
-        e.exec("CREATE TABLE IF NOT EXISTS `RFIDTagData` (`idRFIDTagData` INT NOT NULL ,`tagID` TEXT NOT NULL ,`targetUrl` TEXT NOT NULL ,PRIMARY KEY (`idRFIDTagData`) )");
-        qDebug()<<e.lastError();
+        QSqlQuery q;
+        q.exec("CREATE TABLE IF NOT EXISTS `RFIDTagData` (`tagID` TEXT NOT NULL ,`targetUrl` TEXT NOT NULL ,UNIQUE(`tagID`) PRIMARY KEY (`tagID`) )");
+        qDebug()<<q.lastError();
     }
-
-    db.close();
 }
 
 qTagManager::~qTagManager()
 {
+    QSqlDatabase db = QSqlDatabase::database();
+    db.close();
+}
+
+void qTagManager::addTagEntry(QString tagID, QUrl refUrl)
+{
+    QSqlQuery q;
+    q.exec("INSERT INTO `RFIDTagData` VALUES('"+tagID+"','"+refUrl.toString()+"')");
+    qDebug()<<q.lastError();
+}
+
+QUrl qTagManager::getTagEntry(QString tagID)
+{
+    QSqlQuery q;
+    q.exec("SELECT targetUrl from RFIDTagData WHERE tagID='"+tagID+"'");
+    qDebug()<<q.lastError();
+    QUrl retVal = QUrl("testi.url");
+    while(q.next())
+    {
+        qDebug()<<q.value("targetUrl").toUrl();
+        retVal = q.value("targetUrl").toUrl();
+    }
+
+    return retVal;
+
 }

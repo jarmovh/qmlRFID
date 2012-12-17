@@ -23,4 +23,6 @@ void qmlInterface::onRFIDTag(QVariant tag)
     qDebug()<<"tag:"<<tag;
     logMessage("Read tag: "+tag.toString());
     emit uiSetTagText(tag);
+    tagManager->addTagEntry(tag.toString(),QUrl("testi.url"));
+    tagManager->getTagEntry(tag.toString());
 }

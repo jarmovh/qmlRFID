@@ -41,13 +41,12 @@ QUrl qTagManager::getTagEntry(QString tagID)
     QSqlQuery q;
     q.exec("SELECT targetUrl from RFIDTagData WHERE tagID='"+tagID+"'");
     qDebug()<<q.lastError();
-    QUrl retVal = QUrl("testi.url");
+    QUrl retVal = QUrl("blank.url"); //default url in case of no match
     while(q.next())
     {
-        qDebug()<<q.value("targetUrl").toUrl();
+        //next() works since all tag id's should be unique so only one result is found from query result
         retVal = q.value("targetUrl").toUrl();
     }
-
+    qDebug()<<retVal;
     return retVal;
-
 }

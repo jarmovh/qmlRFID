@@ -7,8 +7,10 @@ Rectangle {
 
     Connections {
         target: qIf;
-        onUiSetTagText: {
-            rfidTagText.text = text
+        onUiGoToUrl: {
+            console.log("url");
+            rfidWebView.url = "http://"+url
+            rfidWebView.reload.trigger();
         }
     }
 
@@ -17,12 +19,23 @@ Rectangle {
         height: parent.height
         color: "#BABABA"
         x: 0
-        y: 96
+        y: 0
 
         WebView {
             id: rfidWebView
             url: "http://www.google.com"
             anchors.fill: parent
+            focus: true
+
+            Keys.onPressed: {
+            if (event.key == Qt.Key_F1) {
+                event.accepted = true;
+                if( messageConsoleRect.visible )
+                    messageConsoleRect.visible = false;
+                else
+                    messageConsoleRect.visible = true;
+                }
+            }
         }
     }
 
@@ -36,6 +49,7 @@ Rectangle {
         opacity: 0.8
         border.color: "#005500"
         border.width: 2
+        visible: false
 
         ListView {
             id: logMessageListView

@@ -29,6 +29,7 @@ private:
     
 signals:
     void uiSetTagText(QVariant text);
+    void uiGoToUrl(QVariant url);
 
 public slots:
     void onRFIDTag(QVariant tag);
